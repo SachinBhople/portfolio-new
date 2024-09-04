@@ -23,6 +23,8 @@ exports.loginUser = asyncHandler(async (req, res) => {
     }
     //verify email
     const result = await User.findOne({ email })
+    console.log(result);
+
     if (!result) {
         return res.status(400).json({ message: "Invaild Email" })
     }
