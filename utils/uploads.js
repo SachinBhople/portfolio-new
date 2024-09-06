@@ -7,11 +7,11 @@ const profileStorage = multer.diskStorage({
         cb(null, fn)
     },
     destination: (req, file, cb) => {
-        let des = "uploads"
-        cb(null, des)
+
+        cb(null, "uploads")
     }
 })
 
-const upload = multer({ storage: profileStorage }).single
+const upload = multer({ storage: profileStorage }).single("hero")
 
 module.exports = upload
