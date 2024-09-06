@@ -6,6 +6,7 @@ require("dotenv").config()
 
 const app = express()
 app.use(express.json())
+app.use(express.static("uploads"))
 app.use(cookieParser())
 app.use(cors({
     origin: true,
