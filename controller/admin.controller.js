@@ -36,8 +36,8 @@ exports.deleteTechnology = asyncHanlder(async (req, res) => {
 
 
 exports.addSocial = asyncHanlder(async (req, res) => {
-    const { name, category } = req.body
-    const { isError, error } = checkEmpty({ name, category })
+    const { name, link } = req.body
+    const { isError, error } = checkEmpty({ name, link })
     if (isError) {
         return res.json(400).json({ message: "All Filed Required", error })
     }
