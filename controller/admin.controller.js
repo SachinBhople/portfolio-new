@@ -41,7 +41,7 @@ exports.addSocial = asyncHanlder(async (req, res) => {
     if (isError) {
         return res.json(400).json({ message: "All Filed Required", error })
     }
-    await Social.create({ name, category })
+    await Social.create({ name, link })
     res.json({ message: "Technology Create Success" })
 })
 
