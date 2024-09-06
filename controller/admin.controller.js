@@ -4,7 +4,8 @@ const Technology = require("../model/Technology")
 const Social = require("../model/Social")
 const Carousel = require("../model/Carousel")
 const upload = require("../utils/uploads")
-
+const fs = require("fs")
+const path = require("path")
 exports.addTechnology = asyncHanlder(async (req, res) => {
     const { name, category } = req.body
     const { isError, error } = checkEmpty({ name, category })
