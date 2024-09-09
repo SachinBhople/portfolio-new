@@ -3,9 +3,12 @@ const { checkEmpty } = require("../utils/cheackEmpty")
 const Technology = require("../model/Technology")
 const Social = require("../model/Social")
 const Carousel = require("../model/Carousel")
-const upload = require("../utils/uploads")
 const fs = require("fs")
 const path = require("path")
+const cloudinary = require("../utils/cloudinaryconfig")
+const upload = require("../utils/uploads")
+
+
 exports.addTechnology = asyncHanlder(async (req, res) => {
     const { name, category } = req.body
     const { isError, error } = checkEmpty({ name, category })
@@ -74,15 +77,30 @@ exports.getAllCarousel = asyncHanlder(async (req, res) => {
     const result = await Carousel.find()
     res.status(200).json({ message: "blog fetch success", result })
 })
+// exports.addCarousel = asyncHanlder(async (req, res) => {
+//     upload(req, res, async err => {
+//         if (err) {
+//             res.status(400).json({ message: "multer error" })
+//         }
+//         await Carousel.create({ ...req.body, hero: req.file.filename })
+//         res.status(201).json({ message: "blog create succes" })
+//     })
+// })
+
+
 exports.addCarousel = asyncHanlder(async (req, res) => {
-    upload(req, res, async err => {
+    upload(req, res, async (err) => {
         if (err) {
-            res.status(400).json({ message: "multer error" })
+            console.log(err)
+            return res.status(400).json({ message: "upload Error" })
         }
-        await Carousel.create({ ...req.body, hero: req.file.filename })
-        res.status(201).json({ message: "blog create succes" })
+        // console.log(req.file.path)
+        const { secure_url } = await cloudinary.uploader.upload(req.file.path)
+        const result = await Carousel.create({ ...req.body, hero: secure_url })
+        res.json({ message: "Carousel Add Success", result })
     })
 })
+
 exports.updateCarousel = asyncHanlder(async (req, res) => {
     upload(req, res, async err => {
         if (err) {
