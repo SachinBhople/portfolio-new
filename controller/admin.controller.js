@@ -122,10 +122,66 @@ exports.updateCarousel = asyncHanlder(async (req, res) => {
 
     })
 })
+
+
+
+// exports.deleteCarousel = asyncHanlder(async (req, res) => {
+//     try {
+//         const { id } = req.params;
+
+//         const result = await Carousel.findById(id);
+
+//         if (!result) {
+//             return res.status(404).json({ message: 'Carousel not found' });
+//         }
+
+//         // Extract the public_id from the Cloudinary URL
+//         const publicId = result.hero.split('/').pop().split('.')[0];
+
+//         // Delete the image from Cloudinary
+//         const cloudinaryResult = await cloudinary.uploader.destroy(publicId);
+
+//         if (cloudinaryResult.result !== 'ok') {
+//             return res.status(400).json({ message: 'Cloudinary deletion failed' });
+//         }
+
+//         // Delete the carousel from the database
+//         await result.deleteOne();
+
+//         res.json({ message: 'Carousel deleted successfully' });
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).json({ message: 'Server error' });
+//     }
+// });
+
+
 exports.deleteCarousel = asyncHanlder(async (req, res) => {
-    const { id } = req.params
-    const result = await Carousel.findById(id)
-    fs.unlinkSync(path.join(__dirname, "..", "uploads", result.hero))
-    await Carousel.findByIdAndDelete(id)
-    res.status(200).json({ message: "blog delete success" })
-})
+    try {
+        const { id } = req.params;
+
+        const result = await Carousel.findById(id);
+
+        if (!result) {
+            return res.status(404).json({ message: 'Carousel not found' });
+        }
+
+        // Extract the public_id from the Cloudinary URL
+        const publicId = result.hero.split('/').pop().split('.')[0];
+
+        // Delete the image from Cloudinary
+        const cloudinaryResult = await cloudinary.uploader.destroy(publicId);
+
+        if (cloudinaryResult.result !== 'ok') {
+            return res.status(400).json({ message: 'Cloudinary deletion failed' });
+        }
+
+        // Delete the carousel from the database
+        await result.deleteOne();
+
+        res.json({ message: 'Carousel deleted successfully' });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});

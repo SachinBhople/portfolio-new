@@ -6,10 +6,10 @@ const profileStorage = multer.diskStorage({
         const fn = Date.now() + path.extname(file.originalname)
         cb(null, fn)
     },
-    destination: (req, file, cb) => {
+    // destination: (req, file, cb) => {
 
-        cb(null, "uploads")
-    }
+    //     cb(null, "uploads")
+    // }
 })
 
 const upload = multer({ storage: profileStorage }).single("hero")
